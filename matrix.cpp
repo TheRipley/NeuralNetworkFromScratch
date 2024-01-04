@@ -19,7 +19,10 @@ Matrix::Matrix(int height, int width)
     }
 
 Matrix::Matrix(std::vector<std::vector<float>> values)
-    : values(values), height(values.size()), width(values[0].size()) {}
+    : height(values.size()), width(values[0].size()), values(values) {}
+
+Matrix::Matrix(const Matrix& other)
+    : height(other.height), width(other.width), values(other.values) {}
 
 int Matrix::getHeight() const {return height;}
 int Matrix::getWidth() const {return width;}

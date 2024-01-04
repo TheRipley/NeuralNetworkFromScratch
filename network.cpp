@@ -12,6 +12,19 @@ Network::Network(std::vector<int> numNodesPerLayer, std::vector<int> layersActiv
     }
 }
 
+Network::Network(const Network& other)
+    : layers(other.layers), numLayers(other.numLayers) {}
+
+/*Network& Network::operator=(const Network& other)
+{
+    if (this != &other)
+    {
+        layers = other.layers;
+        numLayers = other.numLayers;
+    }
+    return *this;
+}*/
+
 Matrix Network::ForwardPropagation(const Matrix& input)
 {
     Matrix output = input;

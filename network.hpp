@@ -10,6 +10,9 @@ private:
 public:
     Network();
     Network(std::vector<int> numNodesPerLayer, std::vector<int> layersActivation);
+    Network(const Network& other);
+
+    //Network& operator=(const Network&);
 
     Matrix ForwardPropagation(const Matrix& input);
     void BackwardPropagation(const Matrix& expectedOutput);

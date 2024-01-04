@@ -13,6 +13,7 @@ public:
     Matrix();
     Matrix(int, int);
     Matrix(std::vector<std::vector<float>>);
+    Matrix(const Matrix& other);
 
     int getHeight() const;
     int getWidth() const;

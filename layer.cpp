@@ -14,6 +14,20 @@ Layer::Layer(int numberOfInputs, int size, int ACTIVATION)
         biases.setRandomValues();
     }
 
+Layer::Layer(const Layer& other)
+    : size(other.size), weights(other.weights), biases(other.biases), ACTIVATION(other.ACTIVATION) {}
+
+/*Layer& Layer::operator=(const Layer& other)
+{
+    if (this!=&other)
+    {
+        size = other.size;
+        weights = other.weights;
+        ACTIVATION = other.ACTIVATION;
+    }
+    return *this;
+}*/
+
 Matrix Layer::Calculate(const Matrix& input)
 {
     Matrix output;
