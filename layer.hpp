@@ -22,8 +22,11 @@ public:
     Matrix getInput() const;
     Matrix getZ() const;
     Matrix getA() const;
+    Matrix getWeights() const;
+    Matrix getBiases() const;
 
-    Matrix Calculate(const Matrix&);
+    Matrix Forward(const Matrix&);
+    Matrix Backward(const Matrix& outputGradient, float learningRate);
     void updateWeights(const Matrix&, const float&);
 };
 #endif 

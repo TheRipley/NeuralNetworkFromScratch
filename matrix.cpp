@@ -31,7 +31,7 @@ std::vector<std::vector<float>> Matrix::getValues() const {return values;}
 void Matrix::setAt(int y, int x, float newVal) {values[y][x] = newVal;}
 
 
-void Matrix::Transpose()
+Matrix Matrix::Transpose()
 {
     Matrix transposed(width, height);
     //transposed.values.clear();
@@ -43,7 +43,7 @@ void Matrix::Transpose()
             transposed.values[j][i] = values[i][j];
         }
     }
-    *this = transposed;
+    return transposed;
 }
 
 void Matrix::setRandomValues()
@@ -152,21 +152,21 @@ Matrix Matrix::operator-(const Matrix& other) const
     return returnMatrix;
 }
 
-Matrix HadamarProduct(const Matrix& matrix1, const Matrix& matrix2, const Matrix& matrix3)
+Matrix HadamarProduct(const Matrix& matrix1, const Matrix& matrix2)
 {
-    if (matrix1.getHeight() != matrix2.getHeight() || matrix1.getWidth() != matrix2.getWidth() ||
-        matrix1.getHeight() != matrix3.getHeight() || matrix1.getWidth() != matrix3.getWidth())
+    if (matrix1.getHeight() != matrix2.getHeight() || matrix1.getWidth() != matrix2.getWidth())
+        
     {
         std::cerr << "Error: Matrix dimensions mismatch in HadamarProduct." << std::endl;
         return Matrix(); // Return an empty matrix or handle the error appropriately
     }
 
-    Matrix output = matrix1;
+    Matrix output(matrix1.getHeight(), matrix1.getWidth());
     for (int i = 0; i < output.getHeight(); i++)
     {
         for (int j = 0; j < output.getWidth(); j++)
         {
-            output.setAt(i, j, output.getValues()[i][j] * matrix2.getValues()[i][j] * matrix3.getValues()[i][j]);
+            output.setAt(i, j, output.getValues()[i][j] * matrix2.getValues()[i][j]);
         }
     }
 

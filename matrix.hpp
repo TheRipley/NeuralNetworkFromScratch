@@ -21,7 +21,7 @@ public:
 
     void setAt(int, int, float);
 
-    void Transpose();
+    Matrix Transpose();
     void setRandomValues();
     Matrix sechSquared();
     

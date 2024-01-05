@@ -16,12 +16,14 @@ Network::Network(std::vector<int> numNodesPerLayer, std::vector<int> layersActiv
 Network::Network(const Network& other)
     : layers(other.layers), numLayers(other.numLayers) {}
 
+std::vector<Layer> Network::getLayers() {return layers;}
+
 Matrix Network::ForwardPropagation(const Matrix& input)
 {
     Matrix output = input;
     for (int i=0; i<numLayers-1; i++)
     {
-        output = layers[i].Calculate(output);
+        output = layers[i].Forward(output);
     }
     return output;
 }
@@ -39,35 +41,11 @@ float Network::Cost(const Matrix& output, const Matrix& expectedOutput)
 
 void Network::BackwardPropagation(const Matrix& output, const Matrix& expectedOutput)
 {
-    
-    for (int i=numLayers-2; i>=1; i--)
+    Matrix costGradient = (output - expectedOutput) * (2.0 / expectedOutput.getHeight());
+
+    for (int i=numLayers-2; i>0; i--)
     {
-        Layer* layer = &layers[1];
-
-        // dC/dYpred
-        Matrix costGradient = (output - expectedOutput) * 2.0f;
-
-        std::cout << "1" <<std::endl;
-
-        //dYpred/dZ
-        Matrix dYpredOVdZ = layer->getZ();
-        dYpredOVdZ = dYpredOVdZ.sechSquared();
-        std::cout << "2" << std::endl;
-
-        //dZ/dW
-        Matrix dZOVdW = layer->getInput(); 
-        std::cout << "3" << std::endl;
-        //dZOVdW.Transpose();
-
-        std::cout << costGradient <<std::endl;
-        std::cout << dYpredOVdZ << std::endl;
-        std::cout << dZOVdW << std::endl; 
-
-        //W = W−α(∂Cost(y,ŷ)/∂W)
-
-        Matrix hadam = HadamarProduct(costGradient, dYpredOVdZ, dZOVdW);
-        std::cout << "4";
-        std::cout << hadam << std::endl;
-        layer->updateWeights(hadam, learningRate);
+        Layer* layer = &layers[i];
+        costGradient = layer->Backward(costGradient, learningRate);
     }
 }

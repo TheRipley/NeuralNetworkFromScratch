@@ -13,6 +13,8 @@ public:
     Network(std::vector<int> numNodesPerLayer, std::vector<int> layersActivation, float learningRate);
     Network(const Network& other);
 
+    std::vector<Layer> getLayers();
+
     //Network& operator=(const Network&);
 
     Matrix ForwardPropagation(const Matrix& input);

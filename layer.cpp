@@ -9,24 +9,28 @@ Layer::Layer(int numberOfInputs, int size, int ACTIVATION)
     {
         weights = Matrix(numberOfInputs, size);
         weights.setRandomValues();    
-        weights.Transpose();
+        weights = weights.Transpose();
 
         biases = Matrix(size, 1);
         biases.setRandomValues();
     }
 
 Layer::Layer(const Layer& other)
-    : size(other.size), weights(other.weights), biases(other.biases), ACTIVATION(other.ACTIVATION), input(input), Z(Z), A(A) {}
+    : size(other.size), weights(other.weights), biases(other.biases), ACTIVATION(other.ACTIVATION), input(other.input), Z(other.Z), A(other.A) {}
+
 
 Matrix Layer::getInput() const {return input;}
 Matrix Layer::getZ() const {return Z;}
 Matrix Layer::getA() const {return A;}
+Matrix Layer::getWeights() const {return weights;}
+Matrix Layer::getBiases() const {return biases;}
 
 
 
-Matrix Layer::Calculate(const Matrix& layerInput)
+Matrix Layer::Forward(const Matrix& layerInput)
 {
     input = layerInput;
+    //std::cout << "bruh" << std::endl;
     Matrix output = weights * input + biases;
     Z = output;
 
@@ -34,7 +38,7 @@ Matrix Layer::Calculate(const Matrix& layerInput)
     {
         case 1:
             mTanh(output);
-            std::cout << "tanh" << std::endl;
+            //std::cout << "tanh" << std::endl;
             break;
         case 2:
             mReLU(output);
@@ -45,13 +49,26 @@ Matrix Layer::Calculate(const Matrix& layerInput)
     }
 
     A = output;
-    std::cout << A << std::endl;
+    //std::cout << A << std::endl;
     return output;
 }
 
-void Layer::updateWeights(const Matrix& gradient, const float& learningRate)
+Matrix Layer::Backward(const Matrix& outputGradient, float learningRate)
 {
-    std::cout << "hello there";
-    weights = weights - gradient * learningRate;
+    Matrix activationDerivative = Z;
+    mTanhPrime(activationDerivative);
+
+    Matrix weightsGradient = outputGradient * input.Transpose();
+
+    Matrix inputGradient = weights.Transpose() * outputGradient;
+
+    weights = weights - weightsGradient * learningRate;
+    biases = biases - outputGradient * learningRate;
+
+    //inputGradient = HadamarProduct(inputGradient, activationDerivative);
+
+    return inputGradient;
 }
+
+
 

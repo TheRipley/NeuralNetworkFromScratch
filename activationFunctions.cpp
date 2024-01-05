@@ -13,6 +13,17 @@ void mTanh(Matrix& input)
     }
 }
 
+void mTanhPrime(Matrix& input)
+{
+    for (int i=0; i<input.getHeight(); i++)
+    {
+        for (int j=0; j<input.getWidth(); j++)
+        {
+            input.setAt(i, j, 1 - pow(tanh(input.getValues()[i][j]), 2));
+        }
+    }
+}
+
 void mReLU(Matrix& input)
 {
     for (int i=0; i<input.getHeight(); i++)

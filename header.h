@@ -17,7 +17,9 @@ extern std::default_random_engine generator;
 extern std::uniform_real_distribution<float> distribution;
 
 void mTanh(Matrix&);
+void mTanhPrime(Matrix& input);
+
 void mReLU(Matrix&);
 void mSigmoid(Matrix&);
 
-Matrix HadamarProduct(const Matrix&, const Matrix&, const Matrix&);
+Matrix HadamarProduct(const Matrix&, const Matrix&);
