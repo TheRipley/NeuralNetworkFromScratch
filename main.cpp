@@ -28,7 +28,6 @@ int main()
         expectedOutputs.push_back(output);
     }
 
-    std::vector<Matrix> expectedOutput;
     
     std::vector<int> numNodesPerLayer = {1, 3, 5, 8, 5, 3, 1};
     std::vector<int> layersActivation = {RELU, RELU, RELU, SIGMOID, RELU, TANH};
@@ -38,6 +37,7 @@ int main()
         for (std::size_t j=0; j<inputs.size(); j++)
         {
             testoutput = network.ForwardPropagation(inputs[j]);
+            std::cout << network.Cost(output, expectedOutputs[j]) << std::endl;
             network.BackwardPropagation(testoutput, expectedOutputs[j]);
         }
     }
