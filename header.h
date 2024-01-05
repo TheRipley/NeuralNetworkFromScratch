@@ -19,3 +19,5 @@ extern std::uniform_real_distribution<float> distribution;
 void mTanh(Matrix&);
 void mReLU(Matrix&);
 void mSigmoid(Matrix&);
+
+Matrix HadamarProduct(const Matrix&, const Matrix&, const Matrix&);

@@ -23,9 +23,13 @@ public:
 
     void Transpose();
     void setRandomValues();
+    Matrix sechSquared();
+    
 
     Matrix operator+(const Matrix&) const;
+    Matrix operator-(const Matrix&) const;
     Matrix operator*(const Matrix&) const;
+    Matrix operator*(const float&) const;
     Matrix& operator=(const Matrix&);
 };
 

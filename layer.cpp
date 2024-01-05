@@ -9,36 +9,32 @@ Layer::Layer(int numberOfInputs, int size, int ACTIVATION)
     {
         weights = Matrix(numberOfInputs, size);
         weights.setRandomValues();    
+        weights.Transpose();
 
         biases = Matrix(size, 1);
         biases.setRandomValues();
     }
 
 Layer::Layer(const Layer& other)
-    : size(other.size), weights(other.weights), biases(other.biases), ACTIVATION(other.ACTIVATION) {}
+    : size(other.size), weights(other.weights), biases(other.biases), ACTIVATION(other.ACTIVATION), input(input), Z(Z), A(A) {}
 
-/*Layer& Layer::operator=(const Layer& other)
-{
-    if (this!=&other)
-    {
-        size = other.size;
-        weights = other.weights;
-        ACTIVATION = other.ACTIVATION;
-    }
-    return *this;
-}*/
+Matrix Layer::getInput() const {return input;}
+Matrix Layer::getZ() const {return Z;}
+Matrix Layer::getA() const {return A;}
 
-Matrix Layer::Calculate(const Matrix& input)
+
+
+Matrix Layer::Calculate(const Matrix& layerInput)
 {
-    Matrix output;
-    weights.Transpose();
-    output = weights * input + biases;
-    weights.Transpose();
+    input = layerInput;
+    Matrix output = weights * input + biases;
+    Z = output;
 
     switch(ACTIVATION)
     {
         case 1:
             mTanh(output);
+            std::cout << "tanh" << std::endl;
             break;
         case 2:
             mReLU(output);
@@ -48,5 +44,14 @@ Matrix Layer::Calculate(const Matrix& input)
             break;
     }
 
+    A = output;
+    std::cout << A << std::endl;
     return output;
 }
+
+void Layer::updateWeights(const Matrix& gradient, const float& learningRate)
+{
+    std::cout << "hello there";
+    weights = weights - gradient * learningRate;
+}
+

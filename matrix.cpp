@@ -57,6 +57,16 @@ void Matrix::setRandomValues()
         }
 }
 
+Matrix Matrix::sechSquared()
+{
+    Matrix output = *this;
+    for (int i = 0; i < height; ++i) 
+    {
+        output.values[i][0] = pow(1/cosh(output.values[i][0]), 2);
+    }
+    return output;
+}
+
 Matrix& Matrix::operator=(const Matrix& other) {
     if (this != &other) {  // Check for self-assignment
         height = other.height;
@@ -90,6 +100,20 @@ Matrix Matrix::operator*(const Matrix& other) const
 
 }
 
+Matrix Matrix::operator*(const float& scalar) const
+{
+
+    Matrix returnMatrix(this->height, this->width);
+
+    for (int i = 0; i < this->height; ++i) {
+        for (int j = 0; j < this->width; ++j) {
+            returnMatrix.values[i][j] = this->values[i][j] * scalar;
+        }
+    }
+
+    return returnMatrix;
+}
+
 Matrix Matrix::operator+(const Matrix& other) const
 {
     if (this->width != other.getWidth() or this->height != other.getHeight())
@@ -109,6 +133,45 @@ Matrix Matrix::operator+(const Matrix& other) const
     return returnMatrix;
 }
 
+Matrix Matrix::operator-(const Matrix& other) const
+{
+    if (this->width != other.getWidth() or this->height != other.getHeight())
+    {
+        std::cerr << "Error: The two matrices can't be added." << std::endl;
+        return Matrix();
+    }
+
+    Matrix returnMatrix(this->height, other.getWidth());
+
+    for (int i = 0; i < this->height; ++i) {
+        for (int j = 0; j < this->width; ++j) {
+            returnMatrix.values[i][j] = this->values[i][j] - other.values[i][j];
+        }
+    }
+
+    return returnMatrix;
+}
+
+Matrix HadamarProduct(const Matrix& matrix1, const Matrix& matrix2, const Matrix& matrix3)
+{
+    if (matrix1.getHeight() != matrix2.getHeight() || matrix1.getWidth() != matrix2.getWidth() ||
+        matrix1.getHeight() != matrix3.getHeight() || matrix1.getWidth() != matrix3.getWidth())
+    {
+        std::cerr << "Error: Matrix dimensions mismatch in HadamarProduct." << std::endl;
+        return Matrix(); // Return an empty matrix or handle the error appropriately
+    }
+
+    Matrix output = matrix1;
+    for (int i = 0; i < output.getHeight(); i++)
+    {
+        for (int j = 0; j < output.getWidth(); j++)
+        {
+            output.setAt(i, j, output.getValues()[i][j] * matrix2.getValues()[i][j] * matrix3.getValues()[i][j]);
+        }
+    }
+
+    return output;
+}
 
 std::ostream& operator<<(std::ostream &stream, const Matrix &matrix)
 {
