@@ -20,10 +20,12 @@ public:
     std::vector<std::vector<float>> getValues() const;
 
     void setAt(int, int, float);
+    float getAt(int, int) const;
 
     Matrix Transpose();
     void setRandomValues();
     Matrix sechSquared();
+    Matrix sumAlongRows() const;
     
 
     Matrix operator+(const Matrix&) const;

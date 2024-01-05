@@ -20,6 +20,9 @@ void mTanh(Matrix&);
 void mTanhPrime(Matrix& input);
 
 void mReLU(Matrix&);
-void mSigmoid(Matrix&);
+void mReLUPrime(Matrix&);
 
-Matrix HadamarProduct(const Matrix&, const Matrix&);
+void mSigmoid(Matrix&);
+void mSigmoidPrime(Matrix&);
+
+Matrix HadamardProduct(const Matrix&, const Matrix&);

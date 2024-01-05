@@ -29,6 +29,7 @@ int Matrix::getWidth() const {return width;}
 std::vector<std::vector<float>> Matrix::getValues() const {return values;}
 
 void Matrix::setAt(int y, int x, float newVal) {values[y][x] = newVal;}
+float Matrix::getAt(int y, int x) const {return values[y][x];}
 
 
 Matrix Matrix::Transpose()
@@ -64,6 +65,23 @@ Matrix Matrix::sechSquared()
     {
         output.values[i][0] = pow(1/cosh(output.values[i][0]), 2);
     }
+    return output;
+}
+
+Matrix Matrix::sumAlongRows() const
+{
+    Matrix output(height, 1);
+
+    for (int i=0; i<height; i++)
+    {
+        float sum = 0.0;
+        for (int j=0; j<width; j++)
+        {
+            sum += values[i][j];
+        }
+        output.setAt(i, 0, sum);
+    }
+
     return output;
 }
 
@@ -137,7 +155,7 @@ Matrix Matrix::operator-(const Matrix& other) const
 {
     if (this->width != other.getWidth() or this->height != other.getHeight())
     {
-        std::cerr << "Error: The two matrices can't be added." << std::endl;
+        std::cerr << "Error: The two matrices can't be substracted." << std::endl;
         return Matrix();
     }
 
@@ -152,7 +170,7 @@ Matrix Matrix::operator-(const Matrix& other) const
     return returnMatrix;
 }
 
-Matrix HadamarProduct(const Matrix& matrix1, const Matrix& matrix2)
+Matrix HadamardProduct(const Matrix& matrix1, const Matrix& matrix2)
 {
     if (matrix1.getHeight() != matrix2.getHeight() || matrix1.getWidth() != matrix2.getWidth())
         
@@ -166,7 +184,7 @@ Matrix HadamarProduct(const Matrix& matrix1, const Matrix& matrix2)
     {
         for (int j = 0; j < output.getWidth(); j++)
         {
-            output.setAt(i, j, output.getValues()[i][j] * matrix2.getValues()[i][j]);
+            output.setAt(i, j, matrix1.getAt(i, j) * matrix2.getAt(i, j));
         }
     }
 

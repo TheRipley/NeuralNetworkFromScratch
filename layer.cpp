@@ -55,19 +55,33 @@ Matrix Layer::Forward(const Matrix& layerInput)
 
 Matrix Layer::Backward(const Matrix& outputGradient, float learningRate)
 {
-    Matrix activationDerivative = Z;
-    mTanhPrime(activationDerivative);
-
+    // Calculate weights gradient
     Matrix weightsGradient = outputGradient * input.Transpose();
 
+    // Calculate input gradient
     Matrix inputGradient = weights.Transpose() * outputGradient;
 
+    // Update weights and bias
     weights = weights - weightsGradient * learningRate;
     biases = biases - outputGradient * learningRate;
 
-    //inputGradient = HadamarProduct(inputGradient, activationDerivative);
-
-    return inputGradient;
+    Matrix activation_prime = input;
+    switch (ACTIVATION)
+    {
+    case 1:
+        mTanhPrime(activation_prime);
+        break;
+    case 2:
+        mReLUPrime(activation_prime);
+        break;
+    case 3:
+        mSigmoidPrime(activation_prime);
+        break;
+    
+    default:
+        break;
+    }
+    return HadamardProduct(inputGradient, activation_prime);   
 }
 
 
